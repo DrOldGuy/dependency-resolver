@@ -1,10 +1,10 @@
 // Copyright (c) 2020 Goosebump Designs LLC
 
-package com.goosebumpdesigns.dependency.resolver;
+package com.goosebumpdesigns.dependency.resolver.exception;
 
 /**
- * This is the base class for both {@link CircularDependencyException} and {@link MissingDependencyException} so that
- * they can both be caught by catching this exception.
+ * This is the base class for both {@link CircularDependencyException} and
+ * {@link MissingDependencyException} so that they can both be caught by catching this exception.
  *
  */
 @SuppressWarnings("serial")

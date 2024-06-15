@@ -1,6 +1,6 @@
 // Copyright (c) 2020 Goosebump Designs LLC
 
-package com.goosebumpdesigns.dependency.resolver;
+package com.goosebumpdesigns.dependency.resolver.exception;
 
 /**
  * This is thrown if a circular dependency is detected.

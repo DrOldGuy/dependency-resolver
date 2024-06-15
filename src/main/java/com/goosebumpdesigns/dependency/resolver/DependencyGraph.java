@@ -5,12 +5,12 @@ package com.goosebumpdesigns.dependency.resolver;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-
-import org.springframework.stereotype.Service;
+import com.goosebumpdesigns.dependency.resolver.exception.CircularDependencyException;
+import com.goosebumpdesigns.dependency.resolver.exception.MissingDependencyException;
 
 /**
- * This class accepts elements and element dependencies. The {@link #sort()} method sorts the elements in dependency
- * order. Use the class like this:
+ * This class accepts elements and element dependencies. The {@link #sort()} method sorts the
+ * elements in dependency order. Use the class like this:
  * 
  * <pre>
  * graph.add("e").dependsOn("d");
@@ -20,13 +20,12 @@ import org.springframework.stereotype.Service;
  * graph.add("a");
  * </pre>
  * 
- * This depends on knowing semantic equality and not physical equality. It will give unpredictable results if the
- * element being sorted does not have a .equals() method.
+ * This depends on knowing semantic equality and not physical equality. It will give unpredictable
+ * results if the element being sorted does not have a .equals() method.
  * 
  * @author Rob
  *
  */
-@Service
 public class DependencyGraph<T> {
   private List<GraphNode<T>> elements = new LinkedList<>();
 
@@ -41,8 +40,8 @@ public class DependencyGraph<T> {
   }
 
   /**
-   * This method sorts the dependencies and returns a list in sorted order. Items at the end of the list may be
-   * dependent on items at the start of the list. So, for the elements and dependencies:
+   * This method sorts the dependencies and returns a list in sorted order. Items at the end of the
+   * list may be dependent on items at the start of the list. So, for the elements and dependencies:
    * 
    * <pre>
    * e -> d
@@ -62,7 +61,8 @@ public class DependencyGraph<T> {
    * c -> a
    *         </pre>
    * 
-   * @throws MissingDependencyException This is thrown if a dependency can't be found in the list of elements:
+   * @throws MissingDependencyException This is thrown if a dependency can't be found in the list of
+   *         elements:
    * 
    *         <pre>
    * a -> b
@@ -78,32 +78,34 @@ public class DependencyGraph<T> {
     List<GraphNode<T>> bucket = new LinkedList<>(elements);
     List<T> resolved = new LinkedList<>();
 
-    while (!bucket.isEmpty()) {
+    while(!bucket.isEmpty()) {
       GraphNode<T> test = bucket.remove(0);
 
-      if (Objects.isNull(start)) {
+      if(Objects.isNull(start)) {
         start = test;
-      } else if (start.equals(test)) {
+      }
+      else if(start.equals(test)) {
         throw new CircularDependencyException(test.toString());
       }
 
-      if (test.getDependencies().isEmpty() || allDependenciesResolved(resolved, test)) {
+      if(test.getDependencies().isEmpty() || allDependenciesResolved(resolved, test)) {
         resolved.add(test.getElement());
         start = null;
-      } else {
+      }
+      else {
         boolean found = false;
 
-        for (int index = 0; !found && index < bucket.size(); index++) {
+        for(int index = 0; !found && index < bucket.size(); index++) {
           GraphNode<T> node = bucket.get(index);
 
-          if (test.getDependencies().contains(node.getElement())) {
+          if(test.getDependencies().contains(node.getElement())) {
             bucket.set(index, test);
             bucket.add(0, node);
             found = true;
           }
         }
 
-        if (!found) {
+        if(!found) {
           throw new MissingDependencyException(test.toString());
         }
       }
@@ -113,8 +115,8 @@ public class DependencyGraph<T> {
   }
 
   /**
-   * This will return true if all the dependencies in the test node are already resolved or is the node under test. This
-   * allows a node to have a dependency on itself.
+   * This will return true if all the dependencies in the test node are already resolved or is the
+   * node under test. This allows a node to have a dependency on itself.
    * 
    * @param resolved
    * @param test
@@ -123,7 +125,7 @@ public class DependencyGraph<T> {
   private boolean allDependenciesResolved(List<T> resolved, GraphNode<T> test) {
     List<T> testList = new LinkedList<>(resolved);
 
-    if (testList.containsAll(test.getDependencies())) {
+    if(testList.containsAll(test.getDependencies())) {
       return true;
     }
 

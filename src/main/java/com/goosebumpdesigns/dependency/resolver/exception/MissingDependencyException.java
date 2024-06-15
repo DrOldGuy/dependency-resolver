@@ -1,9 +1,10 @@
 // Copyright (c) 2020 Goosebump Designs LLC
 
-package com.goosebumpdesigns.dependency.resolver;
+package com.goosebumpdesigns.dependency.resolver.exception;
 
 /**
- * This is thrown if a dependency is not in the list of known elements when the dependency graph is sorted.
+ * This is thrown if a dependency is not in the list of known elements when the dependency graph is
+ * sorted.
  * 
  * @author Rob
  *

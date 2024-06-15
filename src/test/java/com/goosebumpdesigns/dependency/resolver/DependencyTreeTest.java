@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Objects;
 
 import org.junit.jupiter.api.Test;
+import com.goosebumpdesigns.dependency.resolver.exception.CircularDependencyException;
+import com.goosebumpdesigns.dependency.resolver.exception.MissingDependencyException;
 
 /**
  * @author Rob
